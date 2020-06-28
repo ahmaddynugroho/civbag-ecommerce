@@ -1,18 +1,37 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <router-link to="/chart">Chart: {{chartLength}}</router-link>
+    <ol>
+      <li v-for="g in goods" :key="g.title">
+        {{ g.title }} ${{ g.price }}<button @click="addToChart(g)">add to chart</button>
+      </li>
+    </ol>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
 export default {
   name: 'Home',
-  components: {
-    HelloWorld
+  data() {
+    return {
+      goods: this.$store.state.goods,
+    }
+  },
+  methods: {
+    addToChart(good) {
+      this.$store.state.chart.push(good)
+      this.$store.state.chartTotal += parseInt(good.price)
+    }
+  },
+  computed: {
+    chartLength() {
+      return this.$store.state.chart.length
+    }
+  },
+  watch: {
+    chartLength() {
+      return this.$store.state.chart.length
+    }
   }
 }
 </script>
